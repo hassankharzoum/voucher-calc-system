@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -31,6 +31,9 @@ export const SettingsDialog = ({ settings, onSave }) => {
       <DialogContent className="bg-white border-[#D6D3CA]">
         <DialogHeader>
           <DialogTitle className="font-bold">Hesaplama Ayarları / Calculation Settings</DialogTitle>
+          <DialogDescription className="text-[#57665E]">
+            KDV oranı ve fatura bölenini düzenleyin / Adjust KDV rate and invoice divisor
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 pt-2">
           <div className="space-y-1.5">
