@@ -38,7 +38,7 @@ export function calculateVoucher({ d17, i17, d21, kdvRate, divisor }) {
   return { d19: null, i19: null, i21: 0, i23: null, i25, d23, d25: 0, d27: d17, invoice: null, valid: true };
 }
 
-export function fmt(n, digits = 2) {
+export function fmt(n, digits = 0) {
   if (n === null || n === undefined || Number.isNaN(n)) return "—";
   return Number(n).toLocaleString("en-US", {
     minimumFractionDigits: digits,

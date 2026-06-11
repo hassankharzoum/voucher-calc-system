@@ -41,7 +41,7 @@ export const HistoryTable = ({ vouchers, onDelete }) => {
                   <td className="p-3 border-b border-[#D6D3CA] text-sm font-medium">{v.company_name || "—"}</td>
                   <td className="p-3 border-b border-[#D6D3CA] text-sm font-mono num">{v.invoice_no || "—"}</td>
                   <td className="p-3 border-b border-[#D6D3CA] text-sm font-mono num font-bold">{fmt(v.d17)}</td>
-                  <td className="p-3 border-b border-[#D6D3CA] text-sm font-mono num">{v.i17 > 0 ? fmt(v.i17) : "—"}</td>
+                  <td className="p-3 border-b border-[#D6D3CA] text-sm font-mono num">{v.i17 > 0 ? fmt(v.i17, 2) : "—"}</td>
                   <td className="p-3 border-b border-[#D6D3CA] text-sm font-mono num">{fmt(v.d21)}</td>
                   <td className="p-3 border-b border-[#D6D3CA] text-sm font-mono num text-[#a56a22] font-semibold">{fmt(v.results.d23)}</td>
                   <td className="p-3 border-b border-[#D6D3CA] text-sm font-mono num">{fmt(v.results.d25)}</td>

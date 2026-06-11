@@ -52,6 +52,10 @@ Outputs: D19 required invoice (TL), D23 cash by hand (USD), D25 bank transfer (T
 - Fix: calc.js invoice.totalUsd = d21/i17; label clarified to "Invoice Total in USD (before KDV)" in EN/AR/TR.
 - Verified: 7-scenario parity script (Excel formulas vs /api/calculate) — all PASS; D27 always equals D17; UI shows 695.65.
 
+## Display Change (June 11, 2026) — Whole Numbers
+- All displayed amounts rounded to nearest integer, no decimals (fmt() default digits=0 in calc.js). Applies to results, breakdown, deduction banner, history, print receipt.
+- Exception: exchange rate keeps 2 decimals (it's a rate, not an amount). Internal calculations keep full precision; rounding is display-only.
+
 ## Backlog
 - P1: Search/filter and pagination in voucher history
 - P1: Edit existing voucher

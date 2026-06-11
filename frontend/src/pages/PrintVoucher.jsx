@@ -82,7 +82,7 @@ export default function PrintVoucher() {
             <Row label={t("total")} value={fmt(r.d27)} unit="USD" bold />
           </div>
           <div>
-            <Row label={t("exchange_rate")} value={voucher.i17 > 0 ? fmt(voucher.i17) : "—"} unit="" />
+            <Row label={t("exchange_rate")} value={voucher.i17 > 0 ? fmt(voucher.i17, 2) : "—"} unit="" />
             <Row label={t("tax_required")} value={fmt(r.i19)} unit="TRY" />
             <Row label={t("tax_actual")} value={fmt(r.i21)} unit="TRY" />
             <Row label={t("tax_diff_tl")} value={fmt(r.i23)} unit="TRY" />
