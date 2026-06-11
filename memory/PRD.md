@@ -47,6 +47,11 @@ Outputs: D19 required invoice (TL), D23 cash by hand (USD), D25 bank transfer (T
 - [x] Larger fonts, icons (lucide), LTR tabular numbers (.num class), highlighted payment plan rows
 - [x] Testing: iteration_2 — backend 100%, frontend 100%
 
+## Bug Fix (June 11, 2026) — Invoice Total in USD
+- Root cause: breakdown card converted the AFTER-KDV amount to USD ((d21+kdv)/rate = 765.22). Excel uses the BEFORE-KDV amount (D25/I17 = d21/rate = 695.65) in D23/D27.
+- Fix: calc.js invoice.totalUsd = d21/i17; label clarified to "Invoice Total in USD (before KDV)" in EN/AR/TR.
+- Verified: 7-scenario parity script (Excel formulas vs /api/calculate) — all PASS; D27 always equals D17; UI shows 695.65.
+
 ## Backlog
 - P1: Search/filter and pagination in voucher history
 - P1: Edit existing voucher
