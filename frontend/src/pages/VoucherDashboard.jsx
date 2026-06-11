@@ -28,7 +28,7 @@ const LangSwitcher = () => {
           key={l.code}
           data-testid={`lang-btn-${l.code}`}
           onClick={() => setLang(l.code)}
-          className={`px-3 py-1.5 text-sm font-bold transition-colors ${
+          className={`px-3 py-2 sm:py-1.5 min-w-[44px] text-sm font-bold transition-colors ${
             lang === l.code ? "bg-[#284236] text-white" : "text-[#57665E] hover:bg-[#F0EFEA]"
           }`}
         >
@@ -118,17 +118,17 @@ export default function VoucherDashboard() {
   return (
     <div className="min-h-screen" data-testid="voucher-dashboard" dir={dir}>
       <header className="border-b border-[#D6D3CA] bg-white sticky top-0 z-20">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 py-4 flex items-center justify-between gap-3 flex-wrap">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-[#284236] flex items-center justify-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-3 sm:py-4 flex items-center justify-between gap-2 sm:gap-3 flex-wrap">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#284236] flex items-center justify-center shrink-0">
               <Receipt className="w-5 h-5 text-[#C89F65]" />
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-none">{t("app_title")}</h1>
-              <p className="text-xs tracking-[0.18em] uppercase text-[#57665E]">{t("app_subtitle")}</p>
+              <h1 className="text-lg sm:text-2xl font-extrabold tracking-tight leading-none">{t("app_title")}</h1>
+              <p className="text-[10px] sm:text-xs tracking-[0.18em] uppercase text-[#57665E]">{t("app_subtitle")}</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <span data-testid="current-settings-badge" className="hidden md:inline-block font-mono num text-xs text-[#57665E] bg-[#F0EFEA] px-3 py-1.5 rounded-lg">
               KDV {settings.kdv_rate}% · ÷{settings.invoice_divisor}
             </span>
@@ -138,7 +138,7 @@ export default function VoucherDashboard() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 md:px-8 py-8 space-y-6">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-6 sm:py-8 space-y-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           <div className="lg:col-span-6">
             <VoucherForm form={form} setForm={setForm} onSave={saveVoucher} saving={saving} rateRequired={rateRequired} />

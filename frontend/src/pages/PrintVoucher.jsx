@@ -10,7 +10,7 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const Row = ({ label, value, unit, bold }) => (
   <div className="flex items-end gap-2 py-1.5">
-    <span className={`text-sm w-56 shrink-0 ${bold ? "font-bold" : "font-semibold"}`}>{label}</span>
+    <span className={`text-sm w-36 sm:w-56 shrink-0 ${bold ? "font-bold" : "font-semibold"}`}>{label}</span>
     <span className={`font-mono num flex-1 text-end border-b border-dotted border-[#57665E] ${bold ? "font-bold text-base" : "text-sm"}`}>
       {value}
     </span>
@@ -52,7 +52,7 @@ export default function PrintVoucher() {
         </Button>
       </div>
 
-      <div className="print-sheet bg-white max-w-[210mm] mx-auto border border-[#D6D3CA] shadow-sm p-10 md:p-12">
+      <div className="print-sheet bg-white max-w-[210mm] mx-auto border border-[#D6D3CA] shadow-sm p-6 sm:p-10 md:p-12">
         <div className="flex justify-between items-start mb-10">
           <div className="w-14 h-14 rounded-md bg-[#284236] flex items-center justify-center text-[#C89F65] font-extrabold text-xl">
             TM

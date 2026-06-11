@@ -5,6 +5,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "PNU";
+    src: url("./fonts/PNU-Medium.ttf") format("truetype");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 body {
     margin: 0;
     font-family: "IBM Plex Sans", sans-serif;
@@ -22,12 +30,51 @@ h1, h2, h3, h4 {
     font-family: "JetBrains Mono", monospace;
 }
 
+/* Arabic typography — PNU-Medium everywhere when RTL */
 html[dir="rtl"] body,
 html[dir="rtl"] h1,
 html[dir="rtl"] h2,
 html[dir="rtl"] h3,
+html[dir="rtl"] h4,
+html[dir="rtl"] button,
+html[dir="rtl"] input,
+html[dir="rtl"] table,
+html[dir="rtl"] [data-sonner-toast] {
+    font-family: "PNU", "IBM Plex Sans Arabic", "IBM Plex Sans", sans-serif;
+}
+
+/* Arabic readability: generous line height, no clipping, no letter-spacing
+   (letter-spacing breaks Arabic ligatures) */
+html[dir="rtl"] body {
+    line-height: 1.8;
+}
+
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
 html[dir="rtl"] h4 {
-    font-family: "IBM Plex Sans Arabic", "IBM Plex Sans", sans-serif;
+    line-height: 1.45;
+}
+
+html[dir="rtl"] p,
+html[dir="rtl"] span,
+html[dir="rtl"] label,
+html[dir="rtl"] button {
+    line-height: 1.7;
+}
+
+html[dir="rtl"] [class*="tracking-"] {
+    letter-spacing: 0;
+}
+
+html[dir="rtl"] .uppercase {
+    text-transform: none;
+}
+
+/* Numbers keep mono font even in Arabic */
+html[dir="rtl"] .font-mono,
+html[dir="rtl"] .num {
+    font-family: "JetBrains Mono", monospace;
 }
 
 .num {

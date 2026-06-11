@@ -17,16 +17,16 @@ const BigRow = ({ icon: Icon, label, help, value, unit, tone, testId }) => {
   };
   const iconTones = { gold: "text-[#9a7335]", green: "text-[#3A6E55]", neutral: "text-[#57665E]" };
   return (
-    <div data-testid={testId} className={`flex items-center justify-between gap-3 p-4 rounded-lg border ${tones[tone]}`}>
-      <div className="flex items-center gap-3 min-w-0">
+    <div data-testid={testId} className={`flex items-center justify-between gap-2 sm:gap-3 flex-wrap p-3 sm:p-4 rounded-lg border ${tones[tone]}`}>
+      <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
         <Icon className={`w-5 h-5 shrink-0 ${iconTones[tone]}`} />
         <div className="min-w-0">
           <p className="text-sm font-bold leading-tight">{label}</p>
           <p className="text-xs text-[#57665E]">{help}</p>
         </div>
       </div>
-      <p className="whitespace-nowrap text-end">
-        <Num className="text-xl sm:text-2xl">{value}</Num>{" "}
+      <p className="whitespace-nowrap text-end ms-auto">
+        <Num className="text-lg sm:text-2xl">{value}</Num>{" "}
         <span className="text-xs text-[#57665E] font-semibold">{unit}</span>
       </p>
     </div>
@@ -131,12 +131,12 @@ export const ResultsPanel = ({ results, d17 }) => {
                 <p className="whitespace-nowrap"><Num className="text-base">{deduction ? `− ${fmt(results.i25)}` : "0"}</Num> <span className="text-xs">USD</span></p>
               </div>
               <div className={`border-t-2 border-dashed my-1.5 ${deduction ? "border-[#CC8A3A]/40" : "border-[#3A6E55]/30"}`} />
-              <div data-testid="result-d23" className="flex items-center justify-between gap-3 rounded-lg bg-[#3A6E55]/10 border border-[#3A6E55]/30 px-3 py-3">
+              <div data-testid="result-d23" className="flex items-center justify-between gap-2 sm:gap-3 flex-wrap rounded-lg bg-[#3A6E55]/10 border border-[#3A6E55]/30 px-3 py-3">
                 <div className="flex items-center gap-2 min-w-0">
                   <Banknote className="w-5 h-5 shrink-0 text-[#3A6E55]" />
                   <p className="text-sm font-extrabold text-[#2c523f] leading-tight">{t("final_cash_label")}</p>
                 </div>
-                <p className="whitespace-nowrap"><Num className="text-2xl text-[#2c523f]">{fmt(results.d23)}</Num> <span className="text-xs font-bold text-[#3A6E55]">USD</span></p>
+                <p className="whitespace-nowrap ms-auto"><Num className="text-xl sm:text-2xl text-[#2c523f]">{fmt(results.d23)}</Num> <span className="text-xs font-bold text-[#3A6E55]">USD</span></p>
               </div>
             </div>
           </div>

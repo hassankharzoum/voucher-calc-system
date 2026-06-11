@@ -61,6 +61,11 @@ Outputs: D19 required invoice (TL), D23 cash by hand (USD), D25 bank transfer (T
 - Status messages (EN/TR/AR): "KDV deduction has been applied…" (orange) / "No KDV deduction is required. Pay the full cash amount." (green).
 - calc.js exposes results.cashBefore; testids: cash-breakdown, cash-status-message, cash-before-deduction, cash-kdv-deduction, result-d23 (final).
 
+## Feature (June 11, 2026) — PNU Arabic Font + Responsive
+- Custom PNU-Medium font (user-uploaded TTF) at /app/frontend/src/fonts/, @font-face in index.css, applied to ALL Arabic text via html[dir="rtl"] rules (body, headings, buttons, inputs, tables, toasts, print). Numbers stay JetBrains Mono.
+- Arabic readability: line-height 1.7–1.8, letter-spacing zeroed (preserves ligatures), uppercase transform disabled in RTL.
+- Responsive: mobile paddings (px-4), header/title scales, BigRow + final-cash rows flex-wrap, touch-friendly lang buttons (min 44px), print sheet p-6 on mobile. Verified 0px horizontal overflow at 390px in EN and AR.
+
 ## Backlog
 - P1: Search/filter and pagination in voucher history
 - P1: Edit existing voucher
