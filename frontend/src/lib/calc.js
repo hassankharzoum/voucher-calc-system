@@ -15,7 +15,8 @@ export function calculateVoucher({ d17, i17, d21, kdvRate, divisor }) {
     const i23 = i19 - i21;                      // =I19-I21
     const i25 = i23 / i17 > 0 ? i23 / i17 : 0;  // =IF(I23/I17>0,I23/I17,0)
     const d25 = d21;                            // =D21
-    const d23 = d17 - d25 / i17 - i25;          // =D17-(D25/I17)-I25
+    const cashBefore = d17 - d25 / i17;         // cash before KDV deduction
+    const d23 = cashBefore - i25;               // =D17-(D25/I17)-I25
     const d27 = d23 + d25 / i17 + i25;          // =D23+D25/I17+I25
     // Invoice breakdown (display only): entered amount is before KDV.
     // USD total uses the BEFORE-KDV amount (= D25/I17), exactly as the Excel
@@ -29,13 +30,13 @@ export function calculateVoucher({ d17, i17, d21, kdvRate, divisor }) {
             totalUsd: d21 / i17,
           }
         : null;
-    return { d19, i19, i21, i23, i25, d23, d25, d27, invoice, valid: Math.abs(d27 - d17) < 1e-6 };
+    return { d19, i19, i21, i23, i25, d23, d25, d27, cashBefore, invoice, valid: Math.abs(d27 - d17) < 1e-6 };
   }
 
   // No rate & D21 = 0: USD results derived algebraically, TL fields unavailable
   const i25 = ((d17 / divisor) * kdvRate) / 100;
   const d23 = d17 - i25;
-  return { d19: null, i19: null, i21: 0, i23: null, i25, d23, d25: 0, d27: d17, invoice: null, valid: true };
+  return { d19: null, i19: null, i21: 0, i23: null, i25, d23, d25: 0, d27: d17, cashBefore: d17, invoice: null, valid: true };
 }
 
 export function fmt(n, digits = 0) {

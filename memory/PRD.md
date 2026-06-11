@@ -56,6 +56,11 @@ Outputs: D19 required invoice (TL), D23 cash by hand (USD), D25 bank transfer (T
 - All displayed amounts rounded to nearest integer, no decimals (fmt() default digits=0 in calc.js). Applies to results, breakdown, deduction banner, history, print receipt.
 - Exception: exchange rate keeps 2 decimals (it's a rate, not an amount). Internal calculations keep full precision; rounding is display-only.
 
+## Feature (June 11, 2026) — Cash Payment Breakdown
+- Cash section now shows: Cash Before KDV Deduction (= voucher − transfer/rate), KDV Deduction Amount (− orange), and highlighted "Final Cash Amount to Pay by Hand" (green).
+- Status messages (EN/TR/AR): "KDV deduction has been applied…" (orange) / "No KDV deduction is required. Pay the full cash amount." (green).
+- calc.js exposes results.cashBefore; testids: cash-breakdown, cash-status-message, cash-before-deduction, cash-kdv-deduction, result-d23 (final).
+
 ## Backlog
 - P1: Search/filter and pagination in voucher history
 - P1: Edit existing voucher

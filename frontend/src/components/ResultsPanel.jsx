@@ -115,7 +115,32 @@ export const ResultsPanel = ({ results, d17 }) => {
         </div>
 
         <div className="space-y-3">
-          <BigRow icon={Banknote} label={t("cash_payment")} help={t("cash_payment_help")} value={fmt(results.d23)} unit="USD" tone="gold" testId="result-d23" />
+          {/* Cash payment breakdown */}
+          <div data-testid="cash-breakdown" className={`rounded-lg border-2 overflow-hidden ${deduction ? "border-[#CC8A3A]/60" : "border-[#3A6E55]/50"}`}>
+            <div className={`px-4 py-2.5 text-xs font-bold flex items-start gap-2 ${deduction ? "bg-[#CC8A3A]/15 text-[#a56a22]" : "bg-[#3A6E55]/10 text-[#3A6E55]"}`}>
+              {deduction ? <MinusCircle className="w-4 h-4 shrink-0 mt-0.5" /> : <ShieldCheck className="w-4 h-4 shrink-0 mt-0.5" />}
+              <span data-testid="cash-status-message">{deduction ? t("cash_deduction_msg") : t("cash_no_deduction_msg")}</span>
+            </div>
+            <div className="p-4 bg-[#C89F65]/5 space-y-1">
+              <div data-testid="cash-before-deduction" className="flex items-center justify-between gap-3 py-1.5">
+                <p className="text-sm font-medium text-[#182620]">{t("cash_before_deduction")}</p>
+                <p className="whitespace-nowrap"><Num className="text-base">{fmt(results.cashBefore)}</Num> <span className="text-xs text-[#57665E]">USD</span></p>
+              </div>
+              <div data-testid="cash-kdv-deduction" className={`flex items-center justify-between gap-3 py-1.5 ${deduction ? "text-[#a56a22]" : "text-[#57665E]"}`}>
+                <p className="text-sm font-medium">{t("kdv_deduction")}</p>
+                <p className="whitespace-nowrap"><Num className="text-base">{deduction ? `− ${fmt(results.i25)}` : "0"}</Num> <span className="text-xs">USD</span></p>
+              </div>
+              <div className={`border-t-2 border-dashed my-1.5 ${deduction ? "border-[#CC8A3A]/40" : "border-[#3A6E55]/30"}`} />
+              <div data-testid="result-d23" className="flex items-center justify-between gap-3 rounded-lg bg-[#3A6E55]/10 border border-[#3A6E55]/30 px-3 py-3">
+                <div className="flex items-center gap-2 min-w-0">
+                  <Banknote className="w-5 h-5 shrink-0 text-[#3A6E55]" />
+                  <p className="text-sm font-extrabold text-[#2c523f] leading-tight">{t("final_cash_label")}</p>
+                </div>
+                <p className="whitespace-nowrap"><Num className="text-2xl text-[#2c523f]">{fmt(results.d23)}</Num> <span className="text-xs font-bold text-[#3A6E55]">USD</span></p>
+              </div>
+            </div>
+          </div>
+
           <BigRow icon={Landmark} label={t("bank_transfer")} help={t("bank_transfer_help")} value={fmt(results.d25)} unit="TRY" tone="neutral" testId="result-d25" />
           <BigRow icon={Sigma} label={t("total")} help={t("total_help")} value={fmt(results.d27)} unit="USD" tone="green" testId="result-d27" />
         </div>
