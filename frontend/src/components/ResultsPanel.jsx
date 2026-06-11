@@ -1,70 +1,149 @@
 import { fmt } from "@/lib/calc";
-import { CheckCircle2, AlertTriangle } from "lucide-react";
+import { useLang } from "@/lib/i18n";
+import {
+  CheckCircle2, AlertTriangle, Banknote, Landmark, FileText, Sigma,
+  Calculator, ReceiptText, MinusCircle, ShieldCheck,
+} from "lucide-react";
 
-const ResultRow = ({ cell, label, labelEn, value, unit, testId, highlight }) => (
-  <div
-    data-testid={testId}
-    className={`flex items-center justify-between gap-3 py-2.5 px-3 rounded-md ${highlight ? "bg-[#F0EFEA]" : ""}`}
-  >
-    <div className="min-w-0">
-      <p className="text-sm font-semibold text-[#182620] leading-tight">
-        {label} <span className="font-mono text-[10px] text-[#C89F65] align-top">{cell}</span>
+const Num = ({ children, className = "" }) => (
+  <span className={`font-mono num font-bold ${className}`}>{children}</span>
+);
+
+const BigRow = ({ icon: Icon, label, help, value, unit, tone, testId }) => {
+  const tones = {
+    gold: "bg-[#C89F65]/10 border-[#C89F65]/40",
+    green: "bg-[#3A6E55]/10 border-[#3A6E55]/30",
+    neutral: "bg-[#F0EFEA] border-[#D6D3CA]",
+  };
+  const iconTones = { gold: "text-[#9a7335]", green: "text-[#3A6E55]", neutral: "text-[#57665E]" };
+  return (
+    <div data-testid={testId} className={`flex items-center justify-between gap-3 p-4 rounded-lg border ${tones[tone]}`}>
+      <div className="flex items-center gap-3 min-w-0">
+        <Icon className={`w-5 h-5 shrink-0 ${iconTones[tone]}`} />
+        <div className="min-w-0">
+          <p className="text-sm font-bold leading-tight">{label}</p>
+          <p className="text-xs text-[#57665E]">{help}</p>
+        </div>
+      </div>
+      <p className="whitespace-nowrap text-end">
+        <Num className="text-xl sm:text-2xl">{value}</Num>{" "}
+        <span className="text-xs text-[#57665E] font-semibold">{unit}</span>
       </p>
-      <p className="text-xs text-[#57665E]">{labelEn}</p>
     </div>
-    <p className={`font-mono font-semibold whitespace-nowrap ${highlight ? "text-lg" : "text-base"}`}>
-      {value} <span className="text-xs text-[#57665E] font-normal">{unit}</span>
+  );
+};
+
+const SmallRow = ({ label, value, unit, testId, strong }) => (
+  <div data-testid={testId} className="flex items-center justify-between gap-3 py-2 px-3">
+    <p className={`text-sm ${strong ? "font-bold" : "font-medium"} text-[#182620]`}>{label}</p>
+    <p className="whitespace-nowrap">
+      <Num className={strong ? "text-base" : "text-sm font-semibold"}>{value}</Num>{" "}
+      <span className="text-xs text-[#57665E]">{unit}</span>
     </p>
   </div>
 );
 
+const CardTitle = ({ icon: Icon, title, note }) => (
+  <div className="flex items-center gap-2.5 pb-3 border-b border-[#D6D3CA]">
+    <Icon className="w-4.5 h-4.5 text-[#C89F65]" size={18} />
+    <h3 className="text-base font-bold">{title}</h3>
+    {note && <span className="text-[11px] text-[#57665E] italic">· {note}</span>}
+  </div>
+);
+
 export const ResultsPanel = ({ results, d17 }) => {
+  const { t } = useLang();
+
   if (!results || results.error) {
     return (
-      <div className="bg-white rounded-lg border border-[#D6D3CA] shadow-sm p-6">
-        <p className="text-xs tracking-[0.2em] uppercase font-semibold text-[#C89F65]">Sonuçlar / Results</p>
-        <p data-testid="results-empty-state" className="text-sm text-[#57665E] mt-4">
-          {results?.error === "rate_required"
-            ? "Hesaplama için dolar kurunu girin / Enter the exchange rate to calculate"
-            : "Hesaplama için sipariş fişi tutarını girin / Enter the voucher amount to calculate"}
+      <div className="bg-white rounded-xl border border-[#D6D3CA] shadow-sm p-8 text-center">
+        <Calculator className="w-10 h-10 mx-auto text-[#D6D3CA] mb-3" />
+        <p data-testid="results-empty-state" className="text-base text-[#57665E] font-medium">
+          {results?.error === "rate_required" ? t("enter_rate_prompt") : t("enter_amount_prompt")}
         </p>
       </div>
     );
   }
 
+  const deduction = results.i25 > 0;
   const ok = results.valid;
+
   return (
-    <div className="bg-white rounded-lg border border-[#D6D3CA] shadow-sm p-6 space-y-4">
-      <div className="pb-3 border-b border-[#D6D3CA] flex items-center justify-between">
-        <div>
-          <p className="text-xs tracking-[0.2em] uppercase font-semibold text-[#C89F65]">Sonuçlar / Results</p>
-          <h2 className="text-xl font-bold mt-1">Hesaplama / Calculation</h2>
-        </div>
-        <div
-          data-testid="validation-indicator"
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${
-            ok ? "bg-[#3A6E55]/10 text-[#3A6E55]" : "bg-[#B84A3B]/10 text-[#B84A3B]"
-          }`}
-        >
-          {ok ? <CheckCircle2 className="w-3.5 h-3.5" /> : <AlertTriangle className="w-3.5 h-3.5" />}
-          {ok ? "Doğrulandı / Valid" : "Hata / Mismatch"}
+    <div className="space-y-5">
+      {/* Deduction status banner */}
+      <div
+        data-testid="deduction-status"
+        className={`rounded-xl border-2 p-4 flex items-start gap-3 ${
+          deduction ? "bg-[#CC8A3A]/10 border-[#CC8A3A]" : "bg-[#3A6E55]/10 border-[#3A6E55]"
+        }`}
+      >
+        {deduction ? (
+          <MinusCircle className="w-6 h-6 text-[#CC8A3A] shrink-0 mt-0.5" />
+        ) : (
+          <ShieldCheck className="w-6 h-6 text-[#3A6E55] shrink-0 mt-0.5" />
+        )}
+        <div className="flex-1">
+          <p className={`text-base font-extrabold ${deduction ? "text-[#a56a22]" : "text-[#3A6E55]"}`}>
+            {deduction ? t("deduction_required") : t("no_deduction")}
+          </p>
+          <p className="text-sm text-[#57665E] mt-0.5">{deduction ? t("deduction_msg") : t("no_deduction_msg")}</p>
+          {deduction && (
+            <p className="mt-1.5">
+              <Num className="text-xl text-[#a56a22]">{fmt(results.i25)}</Num>{" "}
+              <span className="text-xs font-bold text-[#a56a22]">USD</span>
+            </p>
+          )}
         </div>
       </div>
 
-      <div className="space-y-0.5">
-        <ResultRow cell="D19" label="Fatura Olması Gereken Tutar" labelEn="Required Invoice Amount" value={fmt(results.d19)} unit="TL" testId="result-d19" />
-        <ResultRow cell="D23" label="Ödenen Tutar (Nakit)" labelEn="Cash Paid by Hand" value={fmt(results.d23)} unit="USD" testId="result-d23" highlight />
-        <ResultRow cell="D25" label="Havale Tutarı" labelEn="Bank Transfer Amount" value={fmt(results.d25)} unit="TL" testId="result-d25" highlight />
-        <ResultRow cell="D27" label="Toplam (Doğrulama)" labelEn={`Validation Total — must equal D17 (${fmt(d17)})`} value={fmt(results.d27)} unit="USD" testId="result-d27" highlight />
+      {/* Payment plan */}
+      <div className="bg-white rounded-xl border border-[#D6D3CA] shadow-sm p-6 space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-[#D6D3CA]">
+          <div className="flex items-center gap-2.5">
+            <Banknote className="w-5 h-5 text-[#C89F65]" />
+            <h2 className="text-lg font-bold">{t("payment_plan")}</h2>
+          </div>
+          <div
+            data-testid="validation-indicator"
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${
+              ok ? "bg-[#3A6E55]/10 text-[#3A6E55]" : "bg-[#B84A3B]/10 text-[#B84A3B]"
+            }`}
+          >
+            {ok ? <CheckCircle2 className="w-3.5 h-3.5" /> : <AlertTriangle className="w-3.5 h-3.5" />}
+            {ok ? t("verified") : t("mismatch")}
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <BigRow icon={Banknote} label={t("cash_payment")} help={t("cash_payment_help")} value={fmt(results.d23)} unit="USD" tone="gold" testId="result-d23" />
+          <BigRow icon={Landmark} label={t("bank_transfer")} help={t("bank_transfer_help")} value={fmt(results.d25)} unit="TRY" tone="neutral" testId="result-d25" />
+          <BigRow icon={Sigma} label={t("total")} help={t("total_help")} value={fmt(results.d27)} unit="USD" tone="green" testId="result-d27" />
+        </div>
+
+        <SmallRow label={`${t("required_invoice")} — ${t("required_invoice_help")}`} value={fmt(results.d19)} unit="TRY" testId="result-d19" />
       </div>
 
-      <div className="pt-3 border-t border-dashed border-[#D6D3CA]">
-        <p className="text-xs tracking-[0.18em] uppercase font-semibold text-[#57665E] mb-1 px-3">KDV / Tax</p>
-        <div className="space-y-0.5">
-          <ResultRow cell="I19" label="KDV Tutarı (Olması Gereken)" labelEn="Tax on Required Invoice" value={fmt(results.i19)} unit="TL" testId="result-i19" />
-          <ResultRow cell="I21" label="KDV Tutarı (Fatura)" labelEn="Tax on Actual Invoice" value={fmt(results.i21)} unit="TL" testId="result-i21" />
-          <ResultRow cell="I23" label="KDV Farkı" labelEn="Tax Difference" value={fmt(results.i23)} unit="TL" testId="result-i23" />
-          <ResultRow cell="I25" label="KDV Farkı" labelEn="Tax Difference" value={fmt(results.i25)} unit="USD" testId="result-i25" />
+      {/* Invoice breakdown */}
+      {results.invoice && (
+        <div className="bg-white rounded-xl border border-[#D6D3CA] shadow-sm p-6 space-y-2" data-testid="invoice-breakdown">
+          <CardTitle icon={ReceiptText} title={t("invoice_breakdown")} note={t("invoice_note")} />
+          <div className="divide-y divide-dashed divide-[#D6D3CA]">
+            <SmallRow label={t("before_kdv")} value={fmt(results.invoice.before)} unit="TRY" testId="invoice-before-kdv" />
+            <SmallRow label={t("kdv_amount_lbl")} value={fmt(results.invoice.kdv)} unit="TRY" testId="invoice-kdv-amount" />
+            <SmallRow label={t("after_kdv")} value={fmt(results.invoice.after)} unit="TRY" testId="invoice-after-kdv" strong />
+            <SmallRow label={t("invoice_total_usd")} value={fmt(results.invoice.totalUsd)} unit="USD" testId="invoice-total-usd" strong />
+          </div>
+        </div>
+      )}
+
+      {/* KDV analysis */}
+      <div className="bg-white rounded-xl border border-[#D6D3CA] shadow-sm p-6 space-y-2">
+        <CardTitle icon={FileText} title={t("kdv_analysis")} />
+        <div className="divide-y divide-dashed divide-[#D6D3CA]">
+          <SmallRow label={t("tax_required")} value={fmt(results.i19)} unit="TRY" testId="result-i19" />
+          <SmallRow label={t("tax_actual")} value={fmt(results.i21)} unit="TRY" testId="result-i21" />
+          <SmallRow label={t("tax_diff_tl")} value={fmt(results.i23)} unit="TRY" testId="result-i23" />
+          <SmallRow label={t("tax_diff_usd")} value={fmt(results.i25)} unit="USD" testId="result-i25" strong />
         </div>
       </div>
     </div>

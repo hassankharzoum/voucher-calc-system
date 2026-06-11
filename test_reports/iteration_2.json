@@ -1,0 +1,61 @@
+{
+  "summary": "Iteration 2 (UI/UX overhaul + i18n EN/TR/AR + Invoice Breakdown + Deduction Banner) testing complete. Backend regression suite (12 pytest cases) still 100% green. All requested UI flows verified end-to-end: exact Excel values, deduction banner color/text states, invoice breakdown card visibility, KDV analysis, rate-required warning + save-button disable, save→history→print→delete, language switching with localStorage persistence + RTL on Arabic, NO Excel cell references visible anywhere in UI or print page, settings dialog live recalc, and final reset to kdv=10/div=2.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "i18n.jsx: t() falls back to English when key missing; good. translations object is large; could be split per-locale via dynamic import for bundle size, low priority.",
+    "ResultsPanel: hex-based Tailwind arbitrary classes (e.g. bg-[#CC8A3A]/10) work but couple component to design tokens — consider extracting to tailwind theme.",
+    "VoucherDashboard: settings PUT response is trusted to update state; if backend returned partial Settings, UI would silently drop fields — currently returns full Settings so safe.",
+    "PrintVoucher (verified manually via /print/{id}) honors current language and RTL — confirmed AR receipt title 'سند تحصيل' renders with dir=rtl.",
+    "Backend compute() raises HTTPException inside a pure helper (carried over from iteration 1). Still acceptable, not a regression.",
+    "Review_request listed testid 'input-company' but actual testid is 'input-company-name' — minor doc mismatch in the iteration brief, not a code bug."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "N/A (no auth)",
+  "seed_data_creation": "Created TEST_PWAuto voucher during playwright run and deleted it. Settings put to 20/4 then reset to 10/2 — verified GET /api/settings == {kdv_rate:10, invoice_divisor:2}.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend pytest suite at /app/backend/tests/backend_test.py (12 cases, all pass). Public URL = REACT_APP_BACKEND_URL. Form testids: input-d17, input-d21, input-i17, input-company-name (NOT input-company), input-customer-code, input-invoice-no, input-voucher-date. Results testids: result-d17/19/21/23/25/27, result-i19/21/23/25, invoice-before-kdv, invoice-kdv-amount, invoice-after-kdv, invoice-total-usd, deduction-status, validation-indicator. History row testids: voucher-row-{id}, print-voucher-{id}, delete-voucher-{id}. Lang switcher: lang-btn-en/tr/ar; persists in localStorage app_lang; AR sets document.documentElement.dir='rtl'.",
+  "verified_excel_values_iter2": {
+    "d23": "1,273.91 USD",
+    "d25": "32,000.00 TRY",
+    "d27": "2,000.00 USD",
+    "d19": "46,000.00 TRY",
+    "i19": "4,600.00 TRY",
+    "i21": "3,200.00 TRY",
+    "i23": "1,400.00 TRY",
+    "i25": "30.43 USD",
+    "invoice_before_kdv": "32,000.00 TRY",
+    "invoice_kdv_amount": "3,200.00 TRY",
+    "invoice_after_kdv": "35,200.00 TRY",
+    "invoice_total_usd": "765.22 USD",
+    "deduction_banner_d21_32000": "orange — 'Deduction Required' — 30.43 USD",
+    "deduction_banner_d21_50000": "green — 'No Deduction Required'",
+    "invoice_breakdown_hidden_when_d21_empty": true,
+    "rate_required_warning_when_d21_set_no_i17": true,
+    "save_button_disabled_when_rate_missing": true,
+    "save_button_enabled_after_clearing_invoice": true,
+    "excel_refs_visible_in_dashboard_text": [],
+    "excel_refs_visible_in_print_page": [],
+    "lang_persistence_after_reload": true,
+    "ar_sets_rtl": true,
+    "tr_title": "Tahsilat Makbuzu",
+    "en_title": "Payment Voucher",
+    "ar_title": "سند تحصيل",
+    "settings_live_recalc_kdv20_div4_d19": "23,000.00 TRY",
+    "settings_finally_reset": {"kdv_rate": 10.0, "invoice_divisor": 2.0}
+  }
+}
