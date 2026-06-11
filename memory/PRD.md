@@ -38,6 +38,15 @@ Outputs: D19 required invoice (TL), D23 cash by hand (USD), D25 bank transfer (T
 - [x] Settings dialog (KDV %, divisor) persisted in DB
 - [x] Testing: iteration_1 — backend 100%, frontend 100%
 
+## Implemented (June 11, 2026) — UI/UX Overhaul
+- [x] Full i18n: English / Turkish / Arabic with header language switcher (localStorage persisted), RTL + IBM Plex Sans Arabic for AR
+- [x] Invoice Breakdown card: Amount Before KDV, KDV Amount, Amount After KDV, Invoice Total in USD (calc.js results.invoice)
+- [x] Deduction status banner: orange "Deduction Required" (with USD amount) when KDV diff > 0, green "No Deduction Required" otherwise
+- [x] Reorganized layout: step cards (1 Customer Info, 2 Amounts) with helper texts and required/optional badges
+- [x] All Excel cell references removed from visible UI; user-friendly labels everywhere
+- [x] Larger fonts, icons (lucide), LTR tabular numbers (.num class), highlighted payment plan rows
+- [x] Testing: iteration_2 — backend 100%, frontend 100%
+
 ## Backlog
 - P1: Search/filter and pagination in voucher history
 - P1: Edit existing voucher
